@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#080808">
+<title>Confirmando assinatura | K11Fit</title>
+<style>
+body{background:#080808;color:#fff;font-family:Arial,sans-serif;display:grid;min-height:100vh;place-items:center;margin:0}.card{max-width:560px;margin:20px;padding:32px;border:1px solid #333;border-radius:14px;background:#151515}h1{color:#ffd21a}p{color:#ccc;line-height:1.6}a{display:inline-block;margin-top:15px;color:#080808;background:#ffd21a;padding:12px 18px;border-radius:7px;text-decoration:none;font-weight:bold}.status{color:#ffd21a}
+</style>
+</head>
+<body>
+<main class="card">
+  <h1>Confirmando sua assinatura</h1>
+  <p class="status" id="status" role="status">Aguarde enquanto confirmamos o contrato com o DocuSign.</p>
+  <a id="retry" href="conta.html" hidden>Entrar na conta</a>
+</main>
+<script>
+const status=document.getElementById("status");
+const retry=document.getElementById("retry");
+const signatureId=new URLSearchParams(location.search).get("signatureId");
+async function confirmSignature(){
+  if(!signatureId){status.textContent="Não encontramos o identificador da assinatura. Volte à página de planos e tente novamente.";retry.hidden=false;return}
+  try{
+    const response=await fetch(`/api/signatures/${encodeURIComponent(signatureId)}/complete`,{method:"POST",headers:{"Content-Type":"application/json"},body:"{}"});
+    const data=await response.json();
+    if(response.status===409){status.textContent=data.error||"O contrato ainda não foi concluído no DocuSign.";retry.hidden=false;return}
+    if(response.status===401){status.textContent="Entre novamente na sua conta para continuar após assinar o contrato.";retry.href=`conta.html?next=assinatura-retorno.html&signatureId=${encodeURIComponent(signatureId)}`;retry.hidden=false;return}
+    if(!response.ok||!data.checkoutUrl)throw new Error(data.error||"Não foi possível preparar o pagamento.");
+    status.textContent="Assinatura confirmada. Redirecionando ao pagamento…";
+    location.assign(data.checkoutUrl);
+  }catch(error){status.textContent=error.message;retry.hidden=false}
+}
+confirmSignature();
+</script>
+</body>
+</html>

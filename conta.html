@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#080808">
+<title>Área do aluno | K11Fit Academia</title>
+<style>
+:root{--yellow:#ffd21a;--black:#080808;--panel:#151515;--muted:#bdbdbd;--white:#f7f7f7}*{box-sizing:border-box}body{margin:0;background:var(--black);color:var(--white);font-family:Arial,Helvetica,sans-serif;line-height:1.55}[hidden]{display:none!important}.wrap{width:min(900px,92%);margin:auto}header{border-bottom:1px solid #292929;background:#0b0b0b}.nav{min-height:76px;display:flex;align-items:center;justify-content:space-between;gap:16px}.brand{display:flex;align-items:center;gap:12px;font-weight:900;letter-spacing:1.5px}.brand img{width:52px;height:52px;object-fit:contain;border-radius:50%}.brand b,h1{color:var(--yellow)}a{color:inherit;text-decoration:none}.back{color:var(--yellow)}main{padding:48px 0 70px}h1{font-size:clamp(2rem,5vw,3rem);line-height:1.1;margin:12px 0}.intro{color:var(--muted)}.panel{background:var(--panel);border:1px solid #303030;border-radius:14px;padding:25px;margin-top:20px}.form{display:grid;gap:14px;max-width:480px}.field{display:grid;gap:6px}.field input{padding:12px;border:1px solid #444;border-radius:7px;background:#0c0c0c;color:white;font:inherit}.field input:focus{outline:2px solid var(--yellow)}.btn{display:inline-flex;justify-content:center;align-items:center;padding:12px 18px;background:var(--yellow);color:#090909;font-weight:900;border:0;border-radius:8px;cursor:pointer}.btn:disabled{opacity:.55}.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}.link-button{background:none;border:0;color:var(--yellow);font:inherit;cursor:pointer;padding:8px 0}.status{color:var(--yellow);min-height:1.5em;margin-top:8px}.error{color:#ff9d9d}.muted{color:#aaa}.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;margin-top:12px;text-align:left}th,td{padding:11px;border-bottom:1px solid #353535;vertical-align:top}th{color:var(--yellow);font-size:.9rem}footer{border-top:1px solid #292929;color:#999;padding:22px 0;font-size:.85rem}@media(max-width:600px){.panel{padding:18px}.nav{min-height:66px}.brand img{width:46px;height:46px}th,td{padding:8px;font-size:.86rem}}
+</style>
+</head>
+<body>
+<header><div class="wrap nav"><a class="brand" href="index.html"><img src="assets/logo-k11fit.jpg" alt="Logo K11Fit"><span>K11FIT <b>ACADEMIA</b></span></a><a class="back" href="index.html">← Voltar ao site</a></div></header>
+<main class="wrap">
+  <span class="muted">ÁREA SEGURA</span>
+  <h1>Área do aluno</h1>
+  <p class="intro">Entre ou crie sua conta para acompanhar seus planos e pagamentos.</p>
+  <section class="panel" id="auth-panel">
+    <h2 id="form-title">Entrar</h2>
+    <form class="form" id="auth-form">
+      <label class="field" id="name-field" hidden>Nome completo<input name="name" autocomplete="name" maxlength="100"></label>
+      <label class="field">E-mail<input name="email" type="email" autocomplete="email" maxlength="254" required></label>
+      <label class="field">Senha<input name="password" type="password" autocomplete="current-password" minlength="10" maxlength="128" required></label>
+      <button class="btn" id="submit-button" type="submit">ENTRAR</button>
+    </form>
+    <button class="link-button" id="mode-toggle" type="button">Ainda não tem conta? Cadastre-se</button>
+    <p class="status" id="auth-status" role="status"></p>
+  </section>
+  <section class="panel" id="account-panel" hidden>
+    <h2>Olá, <span id="user-name"></span></h2>
+    <p class="muted" id="user-email"></p>
+    <div class="actions"><a class="btn" href="pagamentos.html">ESCOLHER UM PLANO</a><button class="link-button" id="logout-button" type="button">Sair da conta</button></div>
+    <h3>Seus pagamentos</h3>
+    <div class="table-wrap"><table><thead><tr><th>Plano</th><th>Valor</th><th>Status</th><th>Data</th></tr></thead><tbody id="orders-body"></tbody></table></div>
+    <p class="muted" id="orders-empty" hidden>Nenhum pagamento registrado ainda.</p>
+  </section>
+  <section class="panel" id="admin-panel" hidden>
+    <h2>Painel administrativo</h2>
+    <p class="muted">Alunos e pedidos registrados. O status vem da consulta do servidor ao Mercado Pago.</p>
+    <div class="table-wrap"><table><thead><tr><th>Aluno</th><th>E-mail</th><th>Plano</th><th>Valor</th><th>Status</th><th>Cadastro</th></tr></thead><tbody id="users-body"></tbody></table></div>
+    <p class="muted" id="users-empty" hidden>Nenhum aluno cadastrado.</p>
+  </section>
+</main>
+<footer><div class="wrap">© <span id="year"></span> K11Fit Academia · São Carlos - SP</div></footer>
+<script>
+const byId=id=>document.getElementById(id);
+const authPanel=byId("auth-panel"),accountPanel=byId("account-panel"),adminPanel=byId("admin-panel");
+let registering=false;
+const planNames={mensal:"Mensal",trimestral:"Trimestral",anual:"Anual"};
+const statusNames={approved:"Aprovado",pending:"Pendente",in_process:"Em processamento",rejected:"Recusado",cancelled:"Cancelado",refunded:"Reembolsado",charged_back:"Contestado",checkout_error:"Falha ao iniciar checkout"};
+const money=cents=>new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(cents/100);
+function addCell(row,value){const cell=document.createElement("td");cell.textContent=value??"—";row.append(cell)}
+function formatDate(value){if(!value)return"—";const date=new Date(`${value.replace(" ","T")}Z`);return Number.isNaN(date.getTime())?"—":new Intl.DateTimeFormat("pt-BR").format(date)}
+async function request(url,options={}){let response;try{response=await fetch(url,options)}catch{throw new Error("Não foi possível conectar ao servidor do login. Inicie o site com npm start e abra http://localhost:3000/conta.html (não use Live Server nem abra o arquivo diretamente).")}const contentType=response.headers.get("content-type")||"";if(response.status===204)return{};if(!contentType.includes("application/json"))throw new Error("A API de login não está respondendo. Inicie o site com npm start e abra http://localhost:3000/conta.html.");let data;try{data=await response.json()}catch{throw new Error("O servidor retornou uma resposta inválida. Reinicie o site e tente novamente.")}if(!response.ok)throw new Error(data.error||"Não foi possível concluir a solicitação.");return data}
+function setMode(isRegister){registering=isRegister;byId("form-title").textContent=isRegister?"Criar conta":"Entrar";byId("name-field").hidden=!isRegister;byId("name-field").querySelector("input").required=isRegister;byId("submit-button").textContent=isRegister?"CRIAR CONTA":"ENTRAR";byId("mode-toggle").textContent=isRegister?"Já tem conta? Entrar":"Ainda não tem conta? Cadastre-se";byId("auth-status").textContent="";byId("auth-status").classList.remove("error");byId("auth-form").elements.password.autocomplete=isRegister?"new-password":"current-password"}
+function addOrderRow(body,order){const row=document.createElement("tr");addCell(row,planNames[order.plan]||order.plan);addCell(row,money(order.amountCents));addCell(row,statusNames[order.status]||order.status);addCell(row,formatDate(order.createdAt));body.append(row)}
+async function showAccount(user){const {orders}=await request("/api/account/orders");const adminData=user.role==="admin"?await request("/api/admin/users"):null;authPanel.hidden=true;accountPanel.hidden=false;adminPanel.hidden=!adminData;byId("user-name").textContent=user.name;byId("user-email").textContent=user.email;
+  const body=byId("orders-body");body.replaceChildren();orders.forEach(order=>addOrderRow(body,order));byId("orders-empty").hidden=orders.length>0;
+  if(adminData){const usersBody=byId("users-body");usersBody.replaceChildren();adminData.users.forEach(userRow=>{const row=document.createElement("tr");addCell(row,userRow.name);addCell(row,userRow.email);addCell(row,userRow.plan?planNames[userRow.plan]||userRow.plan:"—");addCell(row,userRow.amountCents===null?"—":money(userRow.amountCents));addCell(row,statusNames[userRow.paymentStatus]||userRow.paymentStatus||"—");addCell(row,formatDate(userRow.createdAt));usersBody.append(row)});byId("users-empty").hidden=adminData.users.length>0}
+}
+byId("mode-toggle").addEventListener("click",()=>setMode(!registering));
+byId("auth-form").addEventListener("submit",async event=>{event.preventDefault();const form=event.currentTarget;const data=Object.fromEntries(new FormData(form));const status=byId("auth-status");status.classList.remove("error");status.textContent="Aguarde…";byId("submit-button").disabled=true;
+  try{const result=await request(registering?"/api/auth/register":"/api/auth/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(data)});const params=new URLSearchParams(location.search);const next=params.get("next");if(next==="pagamentos.html"){const plan=params.get("plan");location.assign(plan?`${next}?plan=${encodeURIComponent(plan)}`:next);return}if(next==="assinatura-retorno.html"){const signatureId=params.get("signatureId");if(signatureId)location.assign(`${next}?signatureId=${encodeURIComponent(signatureId)}`);return}await showAccount(result.user)}
+  catch(error){status.textContent=error.message;status.classList.add("error")}
+  finally{byId("submit-button").disabled=false}
+});
+byId("logout-button").addEventListener("click",async()=>{try{await request("/api/auth/logout",{method:"POST"});location.reload()}catch(error){byId("auth-status").textContent=error.message;byId("auth-status").classList.add("error")}});
+byId("year").textContent=new Date().getFullYear();
+request("/api/auth/me").then(({user})=>showAccount(user)).catch(()=>setMode(false));
+</script>
+</body>
+</html>

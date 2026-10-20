@@ -1,0 +1,39 @@
+K11Fit Academia — área de alunos e checkout Mercado Pago
+
+FUNCIONALIDADES
+- conta.html: cadastro/login de alunos, histórico de pedidos e área administrativa.
+- pagamentos.html: escolha do plano e início da assinatura do contrato DocuSign, disponível após login.
+- assinatura-retorno.html: confirma o estado do envelope no DocuSign e só então abre o checkout.
+- server.js: autenticação, sessões SQLite, DocuSign, criação do checkout e webhook de pagamentos.
+- data/k11fit.sqlite: banco de dados local criado automaticamente; contém usuários, pedidos e sessões.
+
+CONFIGURAÇÃO
+1. Instale Node.js 18 ou superior e abra o terminal nesta pasta.
+2. No arquivo .env, gere SESSION_SECRET com uma chave aleatória de pelo menos 32 caracteres. Exemplo PowerShell: node -e "console.log(require('node:crypto').randomBytes(32).toString('hex'))"
+3. Preencha ADMIN_EMAIL e ADMIN_PASSWORD. A senha administrativa deve ter entre 12 e 128 caracteres. A conta é criada/atualizada pelo servidor ao iniciar; use esses dados na página conta.html.
+4. Configure o app JWT do DocuSign Developers e autorize o usuário de integração com os escopos signature e impersonation. Gere uma chave RSA no app e guarde a chave privada protegida em data/ (nunca no Git).
+5. Salve a chave RSA privada do DocuSign como data/docusign-private.key e mantenha DOCUSIGN_PRIVATE_KEY_PATH=./data/docusign-private.key. No .env, preencha DOCUSIGN_INTEGRATION_KEY, DOCUSIGN_USER_ID, DOCUSIGN_ACCOUNT_ID e DOCUSIGN_TEMPLATE_ID. Confirme no template que o nome da função do assinante é Signer (ou ajuste DOCUSIGN_ROLE_NAME).
+6. Para sandbox, use DOCUSIGN_AUTH_HOST=account-d.docusign.com e DOCUSIGN_BASE_URI=https://demo.docusign.net/restapi. Em produção, use o host de autenticação e a URI REST atribuídos à sua conta.
+7. No painel Mercado Pago Developers, configure uma aplicação e as credenciais de teste em MP_ACCESS_TOKEN.
+8. Configure MP_WEBHOOK_SECRET usando a chave secreta de Webhooks da aplicação.
+9. Confirme os preços em PRICE_MENSAL, PRICE_TRIMESTRAL e PRICE_ANUAL. Eles precisam corresponder aos valores do site.
+10. Execute npm install e depois npm start.
+11. Abra http://localhost:3000, entre em conta.html para criar a conta de aluno e escolha um plano em pagamentos.html.
+
+ASSINATURA E PAGAMENTO
+- O aluno deve estar logado. O servidor cria um envelope a partir do template DocuSign, usando o nome e e-mail da conta e a função Signer.
+- Após o retorno do DocuSign, o servidor consulta o estado real do envelope. Só cria o pedido e abre o Mercado Pago quando o envelope estiver como completed; o retorno do navegador sozinho não comprova assinatura.
+- O checkout usa Checkout Pro/Preferências criado pela API para associar cada pedido à conta do aluno. Links fixos PAYMENT_URL_* não são usados neste fluxo.
+- Para testar webhook local, crie um túnel HTTPS para a porta 3000. Configure SITE_URL com a URL HTTPS pública do túnel, sem barra final, e use https://SUA-URL-PUBLICA/api/mercadopago-webhook como URL de notificações no painel do Mercado Pago.
+- Se usar o túnel para abrir o site, acesse também o site pela URL HTTPS do túnel para que a validação de origem funcione.
+- Ative notificações do evento de pagamentos e informe o segredo correspondente em MP_WEBHOOK_SECRET. Reinicie o servidor após mudar .env.
+- No painel, o status é atualizado apenas depois de consultar o pagamento na API e validar a assinatura, o valor e a moeda. O retorno no navegador não comprova aprovação.
+- Use contas e dados de teste do Mercado Pago durante o desenvolvimento. Não faça cobranças reais para testar.
+
+SEGURANÇA E OPERAÇÃO
+- Nunca publique ou compartilhe MP_ACCESS_TOKEN, MP_WEBHOOK_SECRET, SESSION_SECRET, ADMIN_PASSWORD, a chave privada do DocuSign ou o arquivo .env.
+- A senha dos alunos é armazenada como hash scrypt; sessões e dados ficam no banco SQLite em data/, que não é servido pelo site.
+- O servidor exige SESSION_SECRET e credenciais administrativas válidas para iniciar.
+- Em produção, use HTTPS, defina NODE_ENV=production, configure SITE_URL com o domínio HTTPS permanente e use credenciais de produção somente após validar o fluxo de teste.
+- Faça backup protegido do banco de dados. A administração é somente para consultar contas e pagamentos; ativação, cancelamentos, reembolsos e recuperação de senha precisam de processo próprio.
+- Antes do uso comercial, publique política de privacidade, termos, cancelamentos/reembolsos e revise retenção e acesso aos dados pessoais.

@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#080808">
+<meta name="description" content="K11Fit Academia em São Carlos - SP. Estrutura completa para você treinar e evoluir.">
+<title>Seu próximo nível começa aqui | Academia</title>
+<style>
+:root{--yellow:#ffd21a;--gold:#e7bd18;--black:#080808;--panel:#141414;--muted:#b8b8b8;--white:#f7f7f7}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--black);color:var(--white);font-family:Inter,Arial,Helvetica,sans-serif;line-height:1.6}
+a{color:inherit;text-decoration:none}.wrap{width:min(1160px,92%);margin:auto}
+header{position:sticky;top:0;z-index:10;background:rgba(8,8,8,.94);backdrop-filter:blur(12px);border-bottom:1px solid #292929}
+.nav{min-height:82px;display:flex;align-items:center;justify-content:space-between;gap:20px}.brand{display:flex;align-items:center;gap:12px;font-weight:900;letter-spacing:2px}.brand img{width:62px;height:62px;object-fit:contain;border-radius:50%}.brand span{font-size:1.2rem}.brand b{color:var(--yellow)}
+nav{display:flex;align-items:center;gap:26px;color:#ddd;font-size:.94rem}nav a:hover{color:var(--yellow)}.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;background:var(--yellow);color:#080808;font-weight:900;padding:13px 21px;border-radius:7px;border:0;cursor:pointer;transition:.2s}.btn:hover{background:#ffe36a;transform:translateY(-2px)}.btn-outline{background:transparent;border:1px solid var(--yellow);color:var(--yellow)}.btn-outline:hover{background:var(--yellow);color:#080808}
+.hero{position:relative;overflow:hidden;min-height:620px;display:flex;align-items:center;background:radial-gradient(ellipse at 80% 45%,#4a3a003b,transparent 43%),linear-gradient(110deg,#080808 0%,#0b0b0b 55%,#171300 100%)}.hero:after{content:"K11";position:absolute;right:-2%;bottom:-27%;font-size:clamp(18rem,42vw,40rem);font-weight:1000;line-height:1;color:#ffffff05;letter-spacing:-.1em;pointer-events:none}.hero-content{position:relative;z-index:1;max-width:690px;padding:90px 0}.eyebrow{color:var(--yellow);font-size:.82rem;font-weight:900;letter-spacing:3px;text-transform:uppercase}.hero h1{font-size:clamp(2.8rem,6vw,5.6rem);line-height:.99;letter-spacing:-3px;margin:20px 0}.hero h1 em{font-style:normal;color:var(--yellow)}.hero p{max-width:570px;color:#c9c9c9;font-size:1.12rem;margin:22px 0 30px}.actions{display:flex;gap:13px;flex-wrap:wrap}.stats{display:flex;gap:35px;margin-top:45px;flex-wrap:wrap}.stat strong{display:block;color:var(--yellow);font-size:1.5rem}.stat span{color:#aaa;font-size:.85rem}
+section{padding:82px 0}.section-head{text-align:center;max-width:700px;margin:0 auto 42px}.section-head .eyebrow{display:block}.section-head h2{font-size:clamp(2rem,4vw,3.2rem);line-height:1.1;margin:12px 0}.section-head p{color:var(--muted);margin:0}.features{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.feature,.plan,.review{background:var(--panel);border:1px solid #292929;border-radius:12px;padding:27px}.feature .icon{width:48px;height:48px;display:grid;place-items:center;background:#332a00;color:var(--yellow);border-radius:10px;font-size:1.45rem}.feature h3{margin:18px 0 7px}.feature p{color:var(--muted);margin:0}
+.plans{background:#0e0e0e}.plan-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;align-items:stretch}.plan{display:flex;flex-direction:column;position:relative}.plan.featured{border:1px solid var(--yellow);box-shadow:0 0 35px #ffd21a12;transform:translateY(-8px)}.popular{position:absolute;top:-13px;right:18px;background:var(--yellow);color:#080808;font-size:.72rem;font-weight:900;padding:4px 10px;border-radius:20px}.plan h3{font-size:1.35rem;margin:0}.plan .desc{color:#aaa;font-size:.9rem;min-height:48px}.price{font-size:2.2rem;font-weight:900;margin:16px 0 5px}.price small{font-size:.85rem;color:#aaa;font-weight:500}.plan ul{list-style:none;padding:0;margin:18px 0 26px;flex:1}.plan li{margin:10px 0;color:#ddd}.plan li:before{content:"✓";color:var(--yellow);font-weight:900;margin-right:10px}.plan .btn{width:100%}.note{text-align:center;color:#888;font-size:.85rem;margin-top:22px}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:center}.about-art{min-height:350px;border-radius:15px;border:1px solid #343434;background:linear-gradient(145deg,#25200a,#0c0c0c 60%);display:flex;align-items:center;justify-content:center;padding:30px;position:relative;overflow:hidden}.about-art:before{content:"";position:absolute;width:300px;height:300px;border:45px solid #ffd21a12;border-radius:50%}.about-art img{position:relative;width:min(90%,350px);height:auto;object-fit:contain}.about-copy h2{font-size:clamp(2rem,4vw,3rem);line-height:1.1;margin:10px 0 18px}.about-copy p{color:var(--muted)}.checks{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:24px 0}.checks span:before{content:"✦";color:var(--yellow);margin-right:9px}
+.reviews{background:#0e0e0e}.review-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.stars{color:var(--yellow);letter-spacing:2px}.review p{color:#ddd}.review small{color:#999}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:35px}.contact-card{background:var(--panel);border:1px solid #292929;border-radius:12px;padding:28px}.contact-card h3{margin-top:0}.contact-line{display:flex;gap:13px;margin:18px 0;color:#ddd}.contact-line b{color:var(--yellow)}.map-placeholder{height:100%;min-height:270px;display:grid;place-items:center;text-align:center;padding:25px;border-radius:12px;background:linear-gradient(135deg,#1d1d1d,#101010);border:1px solid #292929;color:#ccc}.map-placeholder span{font-size:2.5rem;color:var(--yellow)}
+footer{border-top:1px solid #292929;padding:27px 0;color:#8e8e8e;font-size:.85rem}.footer-inner{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}.footer-inner strong{color:var(--yellow)}
+.mobile-menu{display:none}
+@media(max-width:800px){nav{gap:14px}.nav>.btn{display:none}.hero{min-height:550px}.features,.plan-grid,.review-grid{grid-template-columns:1fr 1fr}.about-grid,.contact-grid{grid-template-columns:1fr}.plan.featured{transform:none}.about-art{min-height:280px}}
+@media(max-width:560px){.nav{min-height:70px}.brand img{width:50px;height:50px}nav{display:none}.mobile-menu{display:inline-flex;background:transparent;color:white;border:1px solid #444;border-radius:6px;padding:9px 12px}.nav.open{flex-wrap:wrap}.nav.open nav{display:flex;order:3;width:100%;flex-direction:column;align-items:flex-start;padding:0 0 18px}.hero-content{padding:70px 0}.hero h1{letter-spacing:-1.5px}.stats{gap:20px}.features,.plan-grid,.review-grid{grid-template-columns:1fr}.checks{grid-template-columns:1fr}.section-head{text-align:left}.section-head{margin-bottom:30px}section{padding:62px 0}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap nav" id="nav">
+    <a class="brand" href="#inicio" aria-label="K11Fit início"><img src="assets/logo-k11fit.jpg" alt="Logo K11Fit Academia"><span>K11FIT <b>ACADEMIA</b></span></a>
+    <nav aria-label="Navegação principal"><a href="#beneficios">Estrutura</a><a href="#planos">Planos</a><a href="#sobre">Sobre nós</a><a href="#avaliacoes">Avaliações</a><a href="#contato">Contato</a><a href="conta.html">Área do aluno</a></nav>
+    <a class="btn" href="pagamentos.html">QUERO TREINAR</a>
+    <button class="mobile-menu" onclick="document.getElementById('nav').classList.toggle('open')" aria-label="Abrir menu">☰</button>
+  </div>
+</header>
+<main>
+<section class="hero" id="inicio"><div class="wrap"><div class="hero-content">
+  <span class="eyebrow">K11Fit Academia · São Carlos - SP</span>
+  <h1>SEU PRÓXIMO<br>NÍVEL COMEÇA <em>AQUI.</em></h1>
+  <p>Treine com foco, evolua no seu ritmo e transforme sua rotina. Uma estrutura completa para você buscar sua melhor versão.</p>
+  <div class="actions"><a class="btn" href="#planos">CONHEÇA OS PLANOS ↗</a><a class="btn btn-outline" href="#contato">FALE COM A GENTE</a></div>
+  <div class="stats"><div class="stat"><strong>4,4 ★</strong><span>Avaliação no Google</span></div><div class="stat"><strong>Equipamentos</strong><span>para diferentes objetivos</span></div><div class="stat"><strong>Seu ritmo</strong><span>sua evolução</span></div></div>
+</div></div></section>
+
+<section id="beneficios"><div class="wrap"><div class="section-head"><span class="eyebrow">Treine melhor</span><h2>Seu foco. Sua força. <span style="color:var(--yellow)">Sua evolução.</span></h2><p>Um ambiente pensado para você manter a consistência e conquistar seus objetivos.</p></div>
+<div class="features">
+  <article class="feature"><div class="icon">🏋</div><h3>Estrutura completa</h3><p>Variedade de equipamentos para trabalhar diferentes grupos musculares e objetivos.</p></article>
+  <article class="feature"><div class="icon">⚡</div><h3>Treino no seu ritmo</h3><p>Espaço para iniciantes e para quem já tem experiência e quer ir além.</p></article>
+  <article class="feature"><div class="icon">✦</div><h3>Foco nos resultados</h3><p>Crie uma rotina, acompanhe sua evolução e mantenha a motivação treino após treino.</p></article>
+</div></div></section>
+
+<section class="plans" id="planos"><div class="wrap"><div class="section-head"><span class="eyebrow">Escolha seu plano</span><h2>O plano ideal para <span style="color:var(--yellow)">você.</span></h2><p>Confira as opções e fale com a equipe para consultar valores e condições atualizadas.</p></div>
+<div class="plan-grid">
+  <article class="plan"><h3>Plano Mensal</h3><p class="desc">Para começar agora e experimentar sua rotina de treino.</p><div class="price">69,90 <small>/ mês</small></div><ul><li>Acesso à academia</li><li>Flexibilidade mensal</li><li>Consulte condições na recepção</li></ul><a class="btn btn-outline" href="pagamentos.html">CONSULTAR VALOR</a></article>
+  <article class="plan featured"><span class="popular">MAIS FLEXIBILIDADE</span><h3>Plano Trimestral</h3><p class="desc">Mais tempo para construir consistência e acompanhar sua evolução.</p><div class="price">199,90 <small>/ 3 meses</small></div><ul><li>Acesso à academia</li><li>Planeje sua rotina</li><li>Consulte possíveis condições especiais</li></ul><a class="btn" href="pagamentos.html">TENHO INTERESSE</a></article>
+  <article class="plan"><h3>Plano Anual</h3><p class="desc">Compromisso de longo prazo com seus objetivos.</p><div class="price">799,90 <small>/ ano</small></div><ul><li>Acesso à academia</li><li>Foco na constância</li><li>Consulte valores e formas de pagamento</li></ul><a class="btn btn-outline" href="pagamentos.html">CONSULTAR VALOR</a></article>
+</div><p class="note">Os nomes dos planos são sugestões para apresentação. Confirme os planos, preços, regras e benefícios com a academia antes de publicar.</p>
+</div></section>
+
+<section id="sobre"><div class="wrap about-grid"><div class="about-art"><img src="assets/logo-k11fit.jpg" alt="Logo da K11Fit Academia"></div><div class="about-copy"><span class="eyebrow">Conheça a K11Fit</span><h2>Mais do que treinar.<br><span style="color:var(--yellow)">É evoluir.</span></h2><p>A K11Fit Academia fica na Cidade Aracy, em São Carlos - SP. O espaço conta com equipamentos para diferentes tipos de treino e um ambiente para você cuidar da sua saúde e perseguir seus objetivos.</p><div class="checks"><span>Musculação</span><span>Condicionamento</span><span>Rotina ativa</span><span>Seu objetivo em foco</span></div><a class="btn" href="#contato">VENHA CONHECER</a></div></div></section>
+
+<section class="reviews" id="avaliacoes"><div class="wrap"><div class="section-head"><span class="eyebrow">Quem treina recomenda</span><h2>O que dizem sobre <span style="color:var(--yellow)">a K11Fit.</span></h2><p>Avaliações exibidas como trechos das imagens de referência fornecidas.</p></div>
+<div class="review-grid">
+<article class="review"><div class="stars">★★★★★</div><p>“Como que vou falar bem estou lá a 3 meses, achei top de quebra não preciso ir academia Play Boy lá igual tem de tudo... tô curtindo muito.”</p><small>Avaliação do Google</small></article>
+<article class="review"><div class="stars">★★★★★</div><p>“Excelente academia, com muitos aparelhos, muitas esteiras, instrutores qualificados, vale a pena o investimento.”</p><small>Avaliação do Google</small></article>
+<article class="review"><div class="stars">★★★★★</div><p>“Ótimo lugar pra treinar, bons equipamentos, acesso fácil e mesmo no horário de pico dá pra treinar de boa.”</p><small>Avaliação do Google</small></article>
+</div></div></section>
+
+<section id="contato"><div class="wrap"><div class="section-head"><span class="eyebrow">Comece hoje</span><h2>Vamos treinar?</h2><p>Entre em contato para confirmar os horários, conhecer a estrutura e consultar os planos disponíveis.</p></div>
+<div class="contact-grid"><div class="contact-card"><h3>Fale com a K11Fit</h3><div class="contact-line"><b>⌖</b><span>Cidade Aracy, São Carlos - SP</span></div><div class="contact-line"><b>◷</b><span>Horário informado: aberto até 22h<br><small style="color:#999">Confirme os horários atuais antes de ir.</small></span></div><div class="contact-line"><b>☎</b><span>(16) 99118-2229</span></div><div class="contact-line"><b>⌁</b><span>W4V3+G4, Cidade Aracy, São Carlos - SP</span></div><a class="btn" href="https://wa.me/5516991182229?text=Olá!%20Gostaria%20de%20conhecer%20os%20planos%20da%20K11Fit." target="_blank" rel="noopener">CONSULTAR PELO WHATSAPP ↗</a></div>
+<div class="map-placeholder"><div><span>⌖</span><h3>Estamos na Cidade Aracy</h3><p>São Carlos — SP</p><a class="btn btn-outline" href="https://www.google.com/maps/search/?api=1&query=K11Fit+Academia+Cidade+Aracy+Sao+Carlos" target="_blank" rel="noopener">ABRIR NO GOOGLE MAPS ↗</a></div></div></div>
+</div></section>
+</main>
+<footer><div class="wrap footer-inner"><div><strong>K11FIT ACADEMIA</strong> · São Carlos - SP</div><div>Treine com foco. Evolua todos os dias.</div><div>© <span id="year"></span> K11Fit Academia</div></div></footer>
+<script>document.getElementById('year').textContent=new Date().getFullYear();document.querySelectorAll('nav a').forEach(a=>a.addEventListener('click',()=>document.getElementById('nav').classList.remove('open')));</script>
+</body>
+</html>
